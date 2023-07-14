@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "my-cli"
+name = "klickbrick"
 version = "0.1.0"
 description = ""
 authors = ["Mark Venuto <markvenutobass@gmail.com>"]
 readme = "README.md"
-packages = [{include = "my_cli"}]
+packages = [{include = "klickbrick"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"

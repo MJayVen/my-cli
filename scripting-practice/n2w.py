@@ -43,28 +43,51 @@ dict_100_to_900 = {
     "8": "eight hundred",
     "9": "nine hundred",
 }
-# magnitude = {
-#     0: "",
-#     3: "thousand",
-#     6: "million",
-#     9: "billion",
-#     12: "trillion",
-# }
+magnitude = {
+    0: "",
+    3: "thousand",
+    6: "million",
+    9: "billion",
+    12: "trillion",
+}
 
 
 def num2words(num_string):
     """Convert a number to its English word description"""
     if num_string == "0":
         return "zero"
-    elif len(num_string) == 1:
-        res = handle_1_to_9(num_string[0])
-    elif len(num_string) == 2:
-        res = handle_10_to_99(num_string[0], num_string[1])
-    elif len(num_string) == 3:
-        res = handle_100_to_999(num_string[0], num_string[1], num_string[2])
+
+    # add commas as delimiters
+    for i in range(len(num_string) - 3, 0, -3):
+        num_string = num_string[:i] + "," + num_string[i:]
+
+    sections = num_string.split(",")
+    res = ""
+
+    for i in range(len(sections) - 1, -1, -1):
+        if sections[i] == "000":
+            continue
+        else:
+            res = (
+                handle_section(sections[i])
+                + " "
+                + magnitude[(len(sections) - i - 1) * 3]
+                + ", "
+                + res
+            )
+
+    return res[:-2]
+
+
+def handle_section(section):
+    if len(section) == 1:
+        return handle_1_to_9(section[0])
+    elif len(section) == 2:
+        return handle_10_to_99(section[0], section[1])
+    elif len(section) == 3:
+        return handle_100_to_999(section[0], section[1], section[2])
     else:
-        raise ValueError("num_string must be between 0 and 999")
-    return res
+        raise ValueError("section must be between 0 and 999")
 
 
 def handle_1_to_9(ones):
